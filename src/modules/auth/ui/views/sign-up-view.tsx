@@ -18,8 +18,9 @@ import {
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
@@ -47,7 +48,7 @@ export const SignUpView = () => {
         },
     });
 
-    const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    const onSubmit = (data: z.infer<typeof formSchema>) => {
         setError(null);
         setPending(true);
 
@@ -56,11 +57,33 @@ export const SignUpView = () => {
                 name: data.name,
                 email: data.email,
                 password: data.password,
+                callbackURL: "/",
             },
             {
                 onSuccess: () => {
                     setPending(false);
                     router.push("/");
+                },
+                onError: ({ error }) => {
+                    setPending(false);
+                    setError(error.message)
+                }
+            }
+        );
+    };
+
+    const onSocial = (provider: "github" | "google") => {
+        setError(null);
+        setPending(true);
+
+        authClient.signIn.social(
+            {
+                provider: provider,
+                callbackURL: "/",
+            },
+            {
+                onSuccess: () => {
+                    setPending(false);
                 },
                 onError: ({ error }) => {
                     setPending(false);
@@ -172,7 +195,7 @@ export const SignUpView = () => {
                                     type="submit"
                                     className="w-full"
                                 >
-                                    Sign in
+                                    Sign up
                                 </Button>
                                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                                     <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -182,19 +205,21 @@ export const SignUpView = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <Button
                                         disabled={pending}
+                                        onClick={() => onSocial("google")}
                                         variant="outline"
                                         type="button"
                                         className="w-full"
                                     >
-                                        Google
+                                        <FaGoogle />
                                     </Button>
                                     <Button
                                         disabled={pending}
+                                        onClick={() => onSocial("github")}
                                         variant="outline"
                                         type="button"
                                         className="w-full"
                                     >
-                                        Github
+                                        <FaGithub />
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
