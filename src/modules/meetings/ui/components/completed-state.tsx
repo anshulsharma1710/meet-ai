@@ -111,6 +111,21 @@ export const CompletedState = ({ data }: Props) => {
                                         ul: (props) => (
                                             <ul className="list-disc list-inside mb-6" {...props} />
                                         ),
+                                        ol: (props) => (
+                                            <ol className="list-decimal list-inside mb-6" {...props} />
+                                        ),
+                                        li: (props) => (
+                                            <li className="mb-1" {...props} />
+                                        ),
+                                        strong: (props) => (
+                                            <strong className="font-semibold" {...props} />
+                                        ),
+                                        code: (props) => (
+                                            <code className="bg-gray-100 px-1 py-0.5 rounded" {...props} />
+                                        ),
+                                        blockquote: (props) => (
+                                            <blockquote className="border-l-4 pl-4 italic my-4" {...props} />
+                                        ),
                                     }}
                                 >
                                     {data.summary}
