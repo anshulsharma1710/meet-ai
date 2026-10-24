@@ -21,17 +21,6 @@ Meet.AI lets you create AI agents with their own instructions, start video calls
 
 ## How it works
 
-```mermaid
-flowchart LR
-    A[User creates an AI agent] --> B[User starts a meeting]
-    B --> C[Stream Video call]
-    C --> D[OpenAI realtime agent joins the call]
-    C --> E[Recording and transcript captured]
-    E --> F[Webhook triggers Inngest job]
-    F --> G[OpenAI generates summary]
-    G --> H[Summary and transcript saved to Postgres]
-```
-
 1. A user creates an agent and starts a meeting.
 2. Stream Video hosts the call, and the agent joins through the OpenAI realtime API.
 3. When the call ends, Stream sends a webhook with the recording and transcript.
